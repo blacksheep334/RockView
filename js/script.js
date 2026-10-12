@@ -51,3 +51,23 @@ contactForm.addEventListener("submit", function (event) {
 
   window.location.href = whatsappURL;
 });
+
+// About Us slideshow: automatic rotation, arrows and dots
+(() => {
+  const slider = document.querySelector('.about-slider');
+  if (!slider) return;
+  const slides = [...slider.querySelectorAll('.about-slide')];
+  const dots = [...slider.querySelectorAll('.slide-dots button')];
+  let current = 0;
+  let timer;
+  function show(index) {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
+  }
+  function restart() {clearInterval(timer); timer = setInterval(() => show(current + 1), 4000);}
+  slider.querySelector('.prev').addEventListener('click', () => {show(current - 1);restart();});
+  slider.querySelector('.next').addEventListener('click', () => {show(current + 1);restart();});
+  dots.forEach((dot, i) => dot.addEventListener('click', () => {show(i);restart();}));
+  restart();
+})();
